@@ -6,6 +6,7 @@ Session = sessionmaker(bind=engine)
 
 Base = declarative_base()
 
+
 class Room(Base):
     __tablename__ = 'rooms'
     id = Column(Integer, primary_key=True)
@@ -18,10 +19,12 @@ class Room(Base):
     tile_type = Column(String)
     tile_cost_per_sqft = Column(Float)
     tiling_area = Column(Float)
-    total_tile_cost = tiling_area * tile_cost_per_sqft
-    total_flooring_cost = surface_area * flooring_cost_per_sqft
-    total_remodel_cost = total_tile_cost + total_flooring_cost
+    total_tile_cost = Column(Float)
+    total_flooring_cost = Column(Float)
+    total_remodel_cost = Column(Float)
+
     supply = relationship("Supply")
+
 
 class Supply(Base):
     __tablename__ = 'supplies'
@@ -30,7 +33,7 @@ class Supply(Base):
     name = Column(String)
     quantity = Column(Integer)
     cost_per_item = Column(Float)
-    total_supply_cost = quantity * cost_per_item
+    total_supply_cost = Column(Float)
 
     room = relationship("Room")
 
