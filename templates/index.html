@@ -2,9 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>git </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Remodeling Supply Tracker</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header>
+        <h1>House Remodeling Supply Tracker</h1>
+        <nav>
+            <a href="/add-room">Add New Room</a>
+        </nav>
+    </header>
 
+    <main>
+        <section>
+            <h2>Rooms Being Remodeled</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Room Name</th>
+                        <th>Surface Area (sq ft)</th>
+                        <th>Flooring Type</th>
+                        <th>Total Remodeling Cost</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for room in rooms %}
+                    <tr>
+                        <td>{{ room.name }}</td>
+                        <td>{{ room.surface_area }}</td>
+                        <td>{{ room.flooring_type }}</td>
+                        <td>${{ room.total_remodel_cost | round(2) }}</td>
+                        <td>
+                            <a href="/room/{{ room.id }}">View Details</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <nav>
+        <a href="/" class="footer-button">Home</a>
+    </nav>
+    </footer>
 </body>
 </html>
