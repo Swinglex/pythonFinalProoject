@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}Add New Room{% endblock %}
+
+{% block content %}
+<h2>Add a New Room</h2>
+<form action="{{ url_for('add_room') }}" method="POST">
+    <label for="name">Room Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="surface_area">Surface Area (sq ft):</label>
+    <input type="number" id="surface_area" name="surface_area" required step="0.1">
+
+    <label for="flooring_type">Flooring Type:</label>
+    <input type="text" id="flooring_type" name="flooring_type" required>
+
+    <label for="flooring_cost_per_sqft">Flooring Cost per Sq Ft:</label>
+    <input type="number" id="flooring_cost_per_sqft" name="flooring_cost_per_sqft" required step="0.01">
+
+    <label for="is_tiling_needed">Tiling Needed:</label>
+    <input type="text" id="is_tiling_needed" name="is_tiling_needed">
+
+    <label for="tile_type">Tile Type:</label>
+    <input type="text" id="tile_type" name="tile_type">
+
+    <label for="tile_cost_per_sqft">Tile Cost per Sq Ft:</label>
+    <input type="number" id="tile_cost_per_sqft" name="tile_cost_per_sqft" step="0.01">
+
+    <label for="tiling_area">Tiling Area (sq ft):</label>
+    <input type="number" id="tiling_area" name="tiling_area" step="0.1">
+
+    <button type="submit">Add Room</button>
+</form>
+{% endblock %}
