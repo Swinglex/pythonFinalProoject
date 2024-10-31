@@ -7,8 +7,8 @@ app.secretkey = 'woah'
 @app.route('/')
 def index():
     session = Session()
-    room = session.query(Room).all()
-    return render_template('HomePage.html', room = room)
+    rooms = session.query(Room).all()
+    return render_template('index.html', room = rooms)
 
 @app.route('/room')
 def room():
