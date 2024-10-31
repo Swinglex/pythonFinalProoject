@@ -33,7 +33,7 @@ class Supply(Base):
     name = Column(String)
     quantity = Column(Integer)
     cost_per_item = Column(Float)
-    total_supply_cost = Column(Float, default=quantity*cost_per_item)
+    total_supply_cost = Column(Float, default=(quantity*cost_per_item))
 
     room = relationship("Room")
 
