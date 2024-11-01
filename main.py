@@ -20,6 +20,7 @@ def room():
         flooring_type = request.form['flooring_type']
         flooring_cost_per_sqft = float(request.form['cost_per_foot'])
 
+
         total_flooring_cost = (flooring_cost_per_sqft * surface_area)
         # this checks the boolean of the form, it asks if it is true and returns it
         tiling = 'tiling' in request.form
@@ -54,6 +55,8 @@ def room():
                        total_remodel_cost=(total_tile_cost + total_flooring_cost))
         sess.add(in_room)
         sess.commit()
+        return redirect(url_for('index'))
+
     return render_template('/AddRoom.html')
 
 def sum_supplies(room_id):
@@ -84,6 +87,7 @@ def supply():
         sess.query(Room).filter_by(id=int(room_id)).update(
             {Room.total_remodel_cost: Room.total_flooring_cost + Room.total_tile_cost + sum_supplies(int(room_id))})
         sess.commit()
+        return redirect(url_for('index'))
 
     return render_template("AddSupply.html")
 
