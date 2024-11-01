@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Add a New Room</h1>
-    <form method="POST">
+    <form action="/room" method="POST">
         <label for="room_name">Room Name: </label>
         <input type="text" id="room_name" name="room_name" required>
 
@@ -34,6 +34,7 @@
 
         <button type="submit">Submit</button>
     </form>
+    {{ session['room_order'] }}
 
 </body>
 </html>
