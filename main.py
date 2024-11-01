@@ -27,8 +27,8 @@ def room():
 
         if tiling:
             tile_type = request.form['tile_type']
-            tile_cost_per_sqft = float(request.form['tile_cost_per_sqft'])
-            tiling_area = float(request.form['tiling_area'])
+            tile_cost_per_sqft = float(request.form['tile_per_foot'])
+            tiling_area = float(request.form['tile_area'])
             total_tile_cost = (tile_cost_per_sqft * tiling_area)
         else:
             tile_type = None
@@ -57,19 +57,16 @@ def room():
         sess.commit()
         return redirect(url_for('index'))
 
-    return render_template('/AddRoom.html')
-
-def sum_supplies(room_id):
-    total_supplies = sess.query(Supply).filter(Supply.room_id == room_id).all()
-    sum_supply = 0
-    for cost in total_supplies:
-        sum_supply += cost.total_supply_cost
-    return sum_supply
+    return render_template('/add_room.html')
 
 
 @app.route('/roomDetails')
 def room_details():
-    return render_template("RoomDetails.html")
+    room_id = request.args.get('room_id')
+    detail_room = sess.query(Room).filter(Room.id == int(room_id)).first()
+    detail_supplies = sess.query(Supply).filter(Supply.room_id==int(room_id)).all()
+
+    return render_template("RoomDetails.html", room=detail_room, supplies=detail_supplies)
 
 @app.route('/supply', methods=['GET', 'POST'])
 def supply():
@@ -94,6 +91,13 @@ def supply():
 @app.route('/supplyDetails')
 def supply_details():
     return render_template("SupplyDetails.html")
+
+def sum_supplies(room_id):
+    total_supplies = sess.query(Supply).filter(Supply.room_id == room_id).all()
+    sum_supply = 0
+    for cost in total_supplies:
+        sum_supply += cost.total_supply_cost
+    return sum_supply
 
 if __name__ == '__main__':
     app.run()

@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>AddSupply</title>
-</head>
-<body>
+{% extends "layout.html" %}
+
+{% block title %}Add New Room{% endblock %}
+
+{% block content %}
     <h1>Add Supplies to a Specific Room</h1>
     <form action="/supply" method="POST">
         <label for="supply_name">Supply Name: </label>
@@ -21,5 +19,4 @@
 
         <button type="submit">Submit</button>
     </form>
-</body>
-</html>
+{% endblock %}

@@ -1,10 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>RoomDetails</title>
-</head>
-<body>
+{% extends "layout.html" %}
 
-</body>
-</html>
+{% block title %}Room Detail{% endblock %}
+
+{% block content %}
+    <div>
+        <p>Room Name: {{ room.name }}</p>
+        <p>Surface Area: {{ room.surface_area }}</p>
+        <p>Flooring Type: {{ room.flooring_type }}</p>
+        <p>Flooring Cost Per Sqft: {{ room.flooring_cost_per_sqft }}</p>
+        {% if room.is_tiling_needed %}
+            <p>Tiling Type: {{ room.tile_type }}</p>
+            <p>Tile Cost Per Sqft: {{ room.tile_cost_per_sqft }}</p>
+            <p>Tiling Area: {{ room.tiling_area }}</p>
+            <p>Total Tiling Cost: {{ room.total_tile_cost }}</p>
+        {% endif %}
+        {% if supplies %}
+            {% for supply in supplies %}
+                <p>Supply Name: {{ supply.name }}</p>
+                <p>Quantity: {{ supply.quantity }}</p>
+                <p>Cost Per Item: {{ supply.cost_per_item }}</p>
+                <p>Supply Cost: {{ supply.total_supply_cost }}</p>
+            {% endfor %}
+        {% endif %}
+        <p>Total Supplies Cost: {{ room.total_remodel_cost - (room.total_flooring_cost - room.total_tile_cost)}}</p>
+        <p>Total Flooring Cost: {{ room.total_flooring_cost }}</p>
+        <p>Total Remodel Cost: {{ room.total_remodel_cost }}</p>
+    </div>
+{% endblock %}
