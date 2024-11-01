@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, Float, Boolean
+from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, Float, Boolean, Computed
 from sqlalchemy.orm import relationship, sessionmaker, declarative_base
 
 engine = create_engine('sqlite:///house')
@@ -26,6 +26,8 @@ class Room(Base):
     supply = relationship("Supply")
 
 
+
+
 class Supply(Base):
     __tablename__ = 'supplies'
     id = Column(Integer, primary_key=True)
@@ -33,7 +35,7 @@ class Supply(Base):
     name = Column(String)
     quantity = Column(Integer)
     cost_per_item = Column(Float)
-    total_supply_cost = Column(Float, default=(quantity*cost_per_item))
+    total_supply_cost = Column(Float)
 
     room = relationship("Room")
 

@@ -24,7 +24,8 @@ def supply():
         quantity = request.form['quantity']
         cost_per_item = request.form['cost_per_item']
 
-        in_supply = Supply(name=supply_name, quantity=int(quantity), cost_per_item=float(cost_per_item))
+        total_supply_cost = int(quantity) * float(cost_per_item)
+        in_supply = Supply(name=supply_name, quantity=int(quantity), cost_per_item=float(cost_per_item), total_supply_cost=float(total_supply_cost))
         session.add(in_supply)
         session.commit()
     return render_template("AddSupply.html")
