@@ -9,26 +9,32 @@
         <input type="text" id="room_name" name="room_name" required>
 
         <label for="surface_area">Surface Area (in square feet): </label>
-        <input type="number" id="surface_area" name="surface_area" required>
+        <input type="text" id="surface_area" name="surface_area" required>
 
-        <label for="flooring_type">Flooring Type (such as hardwood or tile): </label>
-        <input type="text" id="flooring_type" name="flooring_type" required>
+        <label for="flooring_type">Flooring Type: </label>
+        <select id="flooring_type" name="flooring_type" required>
+            <option value="hardwood">Hardwood</option>
+            <option value="tile">Tile</option>
+        </select>
 
         <label for="cost_per_foot">Cost per Square Foot: </label>
-        <input type="number" id="cost_per_foot" name="cost_per_foot" required>
+        <input type="text" id="cost_per_foot" name="cost_per_foot" required>
 
         <label for="tiling">Tiling? </label>
         <input type="checkbox" id="tiling" name="tiling">
 
         <h2>Tiling (if applicable)</h2>
-        <label for="tile_type">Tile Type (such as ceramic or porcelain): </label>
-        <input type="text" id="tile_type" name="tile_type">
+        <label for="tile_type">Tile Type: </label>
+        <select id="tile_type" name="tile_type">
+            <option value="ceramic">Ceramic</option>
+            <option value="porcelain">Porcelain</option>
+        </select>
 
         <label for="tile_per_foot">Tile Cost per Square Foot: </label>
-        <input type="number" id="tile_per_foot" name="tile_per_foot">
+        <input type="text" id="tile_per_foot" name="tile_per_foot">
 
         <label for="tile_area">Tiling Area: </label>
-        <input type="number" id="tile_area" name="tile_area">
+        <input type="text" id="tile_area" name="tile_area">
 
         <button type="submit">Submit</button>
 </form>
