@@ -1,5 +1,13 @@
+from io import BytesIO
+
+import sns
 from flask import Flask, render_template, request, redirect, url_for, session
 from model.Model import *
+import matplotlib.pyplot as plt
+import seaborn as sns
+from io import BytesIO
+import base64
+
 app = Flask(__name__)
 app.secret_key = "woah"
 
@@ -99,6 +107,25 @@ def sum_supplies(room_id):
         sum_supply += cost.total_supply_cost
     return sum_supply
 
+@app.route('/graph', methods=['GET', 'POST'])
+def graph():
+    rooms = sess.query(Room).all()
+    room_names = [room.name for room in rooms]
+    remodel_costs = [room.total_remodel_cost for room in rooms]
+
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x=room_names, y=remodel_costs, palette="magma")
+    plt.xlabel("Room Name")
+    plt.ylabel("Remodel Cost")
+    plt.title("Total Remodel Cost")
+
+    img = BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plot_url = base64.b64encode(img.getvalue()).decode('utf8')
+    plt.close()
+
+    return render_template("graph.html", plot_url=plot_url)
 if __name__ == '__main__':
     app.run()
 
