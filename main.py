@@ -67,6 +67,13 @@ def room_details():
 
     return render_template("RoomDetails.html", room=detail_room, supplies=detail_supplies)
 
+@app.route('/roomEdit')
+def room_edit():
+    room_id = request.args.get('room_id')
+    room_detail = sess.query(Room).filter(Room.id == int(room_id)).first()
+
+    return render_template("EditRoom.html", rooms=room_detail)
+
 @app.route('/supply', methods=['GET', 'POST'])
 def supply():
     if request.method == "POST":
