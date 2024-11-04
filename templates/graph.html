@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}Remodeling Cost Graph{% endblock %}
+
+{% block content %}
+<h2>Total Remodeling Cost by Room</h2>
+<img src="data:image/png;base64,{{ plot_url }}" alt="Remodeling Cost Graph">
+{% endblock %}
+
+{% block footer %}
+<footer>
+    <nav>
+        <a href="{{ url_for('index') }}" class="footer-button">Home</a>
+        <a href="{{ url_for('add_room') }}" class="footer-button">Add Room</a>
+        <a href="{{ url_for('graph') }}" class="footer-button">View Graph</a>
+    </nav>
+</footer>
+{% endblock %}
