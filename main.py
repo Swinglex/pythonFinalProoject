@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from model.Model import *
+from model.Model import Session, Room, Supply
 app = Flask(__name__)
 app.secret_key = "woah"
 
@@ -20,8 +20,6 @@ def room():
         flooring_type = request.form['flooring_type']
         flooring_cost_per_sqft = float(request.form['cost_per_foot'])
 
-
-        total_flooring_cost = (flooring_cost_per_sqft * surface_area)
         # this checks the boolean of the form, it asks if it is true and returns it
         tiling = 'tiling' in request.form
 
@@ -29,12 +27,10 @@ def room():
             tile_type = request.form['tile_type']
             tile_cost_per_sqft = float(request.form['tile_per_foot'])
             tiling_area = float(request.form['tile_area'])
-            total_tile_cost = (tile_cost_per_sqft * tiling_area)
         else:
             tile_type = None
             tile_cost_per_sqft = None
             tiling_area = None
-            total_tile_cost = 0
 
         #for tossing over to Supply and stuff
         session['room_order'] = {
@@ -50,9 +46,7 @@ def room():
 
 
         in_room = Room(name=room_name, surface_area=surface_area, flooring_type=flooring_type, flooring_cost_per_sqft=flooring_cost_per_sqft,
-                       is_tiling_needed=tiling, tile_type=tile_type, tile_cost_per_sqft=tile_cost_per_sqft, tiling_area=tiling_area,
-                       total_tile_cost=total_tile_cost, total_flooring_cost=total_flooring_cost,
-                       total_remodel_cost=(total_tile_cost + total_flooring_cost))
+                       is_tiling_needed=tiling, tile_type=tile_type, tile_cost_per_sqft=tile_cost_per_sqft, tiling_area=tiling_area)
         sess.add(in_room)
         sess.commit()
         return redirect(url_for('index'))
@@ -76,8 +70,7 @@ def supply():
         cost_per_item = request.form['cost_per_item']
         room_id = request.form['room_id']
 
-        total_supply_cost = int(quantity) * float(cost_per_item)
-        in_supply = Supply(room_id=int(room_id), name=supply_name, quantity=int(quantity), cost_per_item=float(cost_per_item), total_supply_cost=float(total_supply_cost))
+        in_supply = Supply(room_id=int(room_id), name=supply_name, quantity=int(quantity), cost_per_item=float(cost_per_item))
 
         sess.add(in_supply)
         sess.commit()
@@ -96,6 +89,8 @@ def sum_supplies(room_id):
     total_supplies = sess.query(Supply).filter(Supply.room_id == room_id).all()
     sum_supply = 0
     for cost in total_supplies:
+        if cost.total_supply_cost is None:
+            continue
         sum_supply += cost.total_supply_cost
     return sum_supply
 
