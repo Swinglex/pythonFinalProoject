@@ -1,15 +1,22 @@
+/* Background: toned-down Halloween stripes */
+html {
+    height: 100%;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: repeating-linear-gradient(
-        45deg,
-        #2a2a2a,
-        #2a2a2a 20px,
-        #b22222 20px,
-        #b22222 40px,
-        #556b2f 40px,
-        #556b2f 60px
-    );
+            45deg,
+            #2a2a2a,
+            #2a2a2a 20px,
+            #b22222 20px,
+            #b22222 40px,
+            #556b2f 40px,
+            #556b2f 60px
+    ) no-repeat;
+    background-size: cover;
+
     color: white;
 }
 
