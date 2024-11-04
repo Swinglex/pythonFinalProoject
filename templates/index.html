@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}Rooms Being Remodeled{% endblock %}
+
+{% block content %}
+<section>
+    <h2>Rooms Being Remodeled</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Room Name</th>
+                <th>Surface Area (sq ft)</th>
+                <th>Flooring Type</th>
+                <th>Total Remodeling Cost</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for room in rooms %}
+            <tr>
+                <td>{{ room.name }}</td>
+                <td>{{ room.surface_area }}</td>
+                <td>{{ room.flooring_type }}</td>
+                <td>${{ room.total_remodel_cost | round(2) }}</td>
+                <td>
+                    <a href="/roomDetails?room_id={{ room.id }}">View Details</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

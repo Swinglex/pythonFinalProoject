@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>AddRoom</title>
-</head>
-<body>
-    <h1>Add a New Room</h1>
-    <form method="POST" action="AddRoom.html">
+{% extends "layout.html" %}
+
+{% block title %}Add New Room{% endblock %}
+
+{% block content %}
+<h2>Add a New Room</h2>
+<form action="/room" method="POST">
         <label for="room_name">Room Name: </label>
         <input type="text" id="room_name" name="room_name" required>
 
@@ -15,6 +13,7 @@
 
         <label for="flooring_type">Flooring Type (such as hardwood or tile): </label>
         <input type="text" id="flooring_type" name="flooring_type" required>
+
         <label for="cost_per_foot">Cost per Square Foot: </label>
         <input type="number" id="cost_per_foot" name="cost_per_foot" required>
 
@@ -24,13 +23,13 @@
         <h2>Tiling (if applicable)</h2>
         <label for="tile_type">Tile Type (such as ceramic or porcelain): </label>
         <input type="text" id="tile_type" name="tile_type">
+
         <label for="tile_per_foot">Tile Cost per Square Foot: </label>
         <input type="number" id="tile_per_foot" name="tile_per_foot">
+
         <label for="tile_area">Tiling Area: </label>
         <input type="number" id="tile_area" name="tile_area">
 
         <button type="submit">Submit</button>
-    </form>
-
-</body>
-</html>
+</form>
+{% endblock %}
