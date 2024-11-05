@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+
+{% block title %}Edit Supply{% endblock %}
+
+{% block content %}
+
+    <h1>Edit supply</h1>
+    <form action="/editSupply?supply_id={{ supply.id }}" method="post">
+
+        <label for="supply_name">Supply Name:</label>
+        <input type="text" id="supply_name" name="supply_name" value="{{ supply.name }}" required>
+
+        <label for="quantity">Quantity</label>
+        <input type="text" id="quantity" name="quantity" value="{{ supply.quantity }}" required>
+
+        <label for="cost_per_item">Cost per Item: </label>
+        <input type="text" id="cost_per_item" name="cost_per_item" value="{{ supply.cost_per_item }}" required>
+
+        <label for="room_name">Enter Room Name: </label>
+        <input type="text" id="room_name" name="room_name" value="{{ supply.room.name }}" required>
+
+        <button type="submit">Sobmit</button>
+        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                            <p class="error">{{ message }}</p>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+    </form>
+
+{% endblock %}

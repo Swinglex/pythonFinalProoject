@@ -25,5 +25,33 @@
         <p>Total Supplies Cost: {{ room.total_remodel_cost - (room.total_flooring_cost - room.total_tile_cost)}}</p>
         <p>Total Flooring Cost: {{ room.total_flooring_cost }}</p>
         <p>Total Remodel Cost: {{ room.total_remodel_cost }}</p>
+        {% if supplies %}
+            <div class="scroller">
+                <table>
+                <thead>
+                    <tr>
+                        <th>Supply Name</th>
+                        <th>Quantity</th>
+                        <th>Cost Per Item</th>
+                        <th>Supply Cost</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for supply in supplies %}
+                        <tr>
+                            <td>{{ supply.name }}</td>
+                            <td>{{ supply.quantity }}</td>
+                            <td>{{ supply.cost_per_item }}</td>
+                            <td>{{ supply.total_supply_cost }}</td>
+                            <td>
+                                <a href="/editSupply?supply_id={{ supply.id }}">Edit</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

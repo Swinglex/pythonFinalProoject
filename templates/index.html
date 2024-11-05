@@ -3,8 +3,8 @@
 {% block title %}Rooms Being Remodeled{% endblock %}
 
 {% block content %}
-<section>
     <h2>Rooms Being Remodeled</h2>
+    <div class="scroller">
     <table>
         <thead>
             <tr>
@@ -12,7 +12,7 @@
                 <th>Surface Area (sq ft)</th>
                 <th>Flooring Type</th>
                 <th>Total Remodeling Cost</th>
-                <th>Actions</th>
+                <th colspan="2">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -25,9 +25,13 @@
                 <td>
                     <a href="/roomDetails?room_id={{ room.id }}">View Details</a>
                 </td>
+                <td>
+                    <a href="/editRoom?room_id={{ room.id }}">Edit Room</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-</section>
+    </div>
+
 {% endblock %}
