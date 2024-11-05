@@ -154,6 +154,7 @@ form {
     flex-direction: column;
 }
 
-label {
-    padding-top: 5px;
+label, button, div.tile_click {
+    margin-top: 10px;
 }
+

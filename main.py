@@ -111,11 +111,11 @@ def room_edit():
                                                                  Room.tile_cost_per_sqft: tile_cost_per_sqft, Room.tiling_area: tiling_area})
         sess.commit()
         return redirect(url_for('index'))
+    else:
+        room_id = int(request.args['room_id'])
+        room_detail = sess.query(Room).filter(Room.id == room_id).first()
 
-    room_id = int(request.args['room_id'])
-    room_detail = sess.query(Room).filter(Room.id == room_id).first()
-
-    return render_template("EditRoom.html", room=room_detail)
+        return render_template("EditRoom.html", room=room_detail)
 
 @app.route('/supply', methods=['GET', 'POST'])
 def supply():
@@ -194,6 +194,7 @@ def sum_supplies(room_id):
             continue
         sum_supply += cost.total_supply_cost
     return sum_supply
+
 
 def name_to_room(room_name):
     supply_room = sess.query(Room).filter(func.lower(Room.name) == room_name.lower()).first()

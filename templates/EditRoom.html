@@ -29,13 +29,15 @@
 
         <label for="cost_per_foot">Cost per Square Foot: </label>
         <input type="text" id="cost_per_foot" name="cost_per_foot" value="{{ room.flooring_cost_per_sqft }}" required>
-
-        <label for="tiling">Tiling? </label>
+        <div class="tile_click">
+            <label for="tiling">Tiling? </label>
         {% if room.is_tiling_needed %}
             <input type="checkbox" id="tiling" name="tiling" checked>
         {% else %}
             <input type="checkbox" id="tiling" name="tiling">
         {% endif %}
+        </div>
+
         <h2>Tiling (if applicable)</h2>
         <label for="tile_type">Tile Type: </label>
         <select id="tile_type" name="tile_type">
