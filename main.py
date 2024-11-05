@@ -7,6 +7,7 @@ import base64
 
 app = Flask(__name__)
 app.secret_key = "woah"
+app.debug = True
 
 sess = Session()
 
@@ -118,6 +119,7 @@ def graph():
     plt.close()
 
     return render_template("graph.html", plot_url=plot_url)
+
 if __name__ == '__main__':
     app.run()
 
