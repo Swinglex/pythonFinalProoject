@@ -90,6 +90,7 @@ def room_edit():
                                                                  Room.flooring_cost_per_sqft: flooring_cost_per_sqft, Room.is_tiling_needed: tiling, Room.tile_type: tile_type,
                                                                  Room.tile_cost_per_sqft: tile_cost_per_sqft, Room.tiling_area: tiling_area})
         sess.commit()
+        return redirect(url_for('index'))
 
     room_id = request.args.get('room_id')
     room_detail = sess.query(Room).filter(Room.id == int(room_id)).first()
