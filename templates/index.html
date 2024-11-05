@@ -20,7 +20,7 @@
             <tr>
                 <td>{{ room.name }}</td>
                 <td>{{ room.surface_area }}</td>
-                <td>{{ room.flooring_type }}</td>
+                <td>{{ room.flooring_type | title() }}</td>
                 <td>${{ room.total_remodel_cost | round(2) }}</td>
                 <td>
                     <a href="/roomDetails?room_id={{ room.id }}">View Details</a>
