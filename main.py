@@ -135,7 +135,7 @@ def graph():
     room_names = [in_room.name for in_room in rooms]
     remodel_costs = [in_room.total_remodel_cost for in_room in rooms]
 
-    plt.figure(figsize=(10, 6))
+    # plt.figure(figsize=(10, 6))
     sns.barplot(x=room_names, y=remodel_costs, palette="magma")
     plt.xlabel("Room Name")
     plt.ylabel("Remodel Cost")
