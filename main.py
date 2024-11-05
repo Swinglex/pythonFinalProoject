@@ -61,18 +61,40 @@ def room():
 
 @app.route('/roomDetails')
 def room_details():
-    room_id = request.args.get('room_id')
-    detail_room = sess.query(Room).filter(Room.id == int(room_id)).first()
-    detail_supplies = sess.query(Supply).filter(Supply.room_id==int(room_id)).all()
+    detail_room_id = request.args.get('room_id')
+    detail_room = sess.query(Room).filter(Room.id == int(detail_room_id)).first()
+    detail_supplies = sess.query(Supply).filter(Supply.room_id==int(detail_room_id)).all()
 
     return render_template("RoomDetails.html", room=detail_room, supplies=detail_supplies)
 
-@app.route('/roomEdit')
+@app.route('/editRoom', methods=['GET', 'POST'])
 def room_edit():
+    if request.method == 'POST':
+        room_name = request.form['room_name']
+        surface_area = float(request.form['surface_area'])
+        flooring_type = request.form['flooring_type']
+        flooring_cost_per_sqft = float(request.form['cost_per_foot'])
+
+        tiling = 'tiling' in request.form
+        if tiling:
+            tile_type = request.form['tile_type']
+            tile_cost_per_sqft = float(request.form['tile_per_foot'])
+            tiling_area = float(request.form['tile_area'])
+        else:
+            tile_type = None
+            tile_cost_per_sqft = None
+            tiling_area = None
+
+        room_id = request.args.get('room_id')
+        sess.query(Room).filter(Room.id == int(room_id)).update({Room.name: room_name, Room.surface_area: surface_area, Room.flooring_type: flooring_type,
+                                                                 Room.flooring_cost_per_sqft: flooring_cost_per_sqft, Room.is_tiling_needed: tiling, Room.tile_type: tile_type,
+                                                                 Room.tile_cost_per_sqft: tile_cost_per_sqft, Room.tiling_area: tiling_area})
+        sess.commit()
+
     room_id = request.args.get('room_id')
     room_detail = sess.query(Room).filter(Room.id == int(room_id)).first()
 
-    return render_template("EditRoom.html", rooms=room_detail)
+    return render_template("EditRoom.html", room=room_detail)
 
 @app.route('/supply', methods=['GET', 'POST'])
 def supply():

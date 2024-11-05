@@ -4,4 +4,65 @@
 
 {% block content %}
 
+    <h1>Edit Room</h1>
+    <form method="POST" action="/roomEdit?room_id={{ room.id }}">
+        <!-- Form pre-filled with existing room data to allow updating information -->
+        <label for="room_name">Room Name: </label>
+        <input type="text" id="room_name" name="room_name" value="{{ room.name }}" required>
+
+        <label for="surface_area">Surface Area (in square feet): </label>
+        <input type="text" id="surface_area" name="surface_area" value="{{ room.surface_area }}" required>
+
+        <label for="flooring_type">Flooring Type: </label>
+        <select id="flooring_type" name="flooring_type" required>
+            {% if room.flooring_type == "hardwood" %}
+                <option value="hardwood" selected >Hardwood</option>
+            {% else %}
+                <option value="hardwood" >Hardwood</option>
+            {% endif %}
+            {% if room.flooring_type == "tile" %}
+                <option value="tile" selected>Tile</option>
+            {% else %}
+                <option value="tile" >Tile</option>
+            {% endif %}
+        </select>
+
+        <label for="cost_per_foot">Cost per Square Foot: </label>
+        <input type="text" id="cost_per_foot" name="cost_per_foot" value="{{ room.flooring_cost_per_sqft }}" required>
+
+        <label for="tiling">Tiling? </label>
+        {% if room.is_tiling_needed %}
+            <input type="checkbox" id="tiling" name="tiling" checked>
+        {% else %}
+            <input type="checkbox" id="tiling" name="tiling">
+        {% endif %}
+        <h2>Tiling (if applicable)</h2>
+        <label for="tile_type">Tile Type: </label>
+        <select id="tile_type" name="tile_type">
+            {% if room.tile_type == "ceramic" %}
+                <option value="ceramic" selected>Ceramic</option>
+            {% else %}
+                <option value="ceramic">Ceramic</option>
+            {% endif %}
+            {% if room.tile_type == "porcelain" %}
+                <option value="porcelain" selected>Porcelain</option>
+            {% else %}
+                <option value="porcelain" selected>Porcelain</option>
+            {% endif %}
+            {% if room.tile_type == None %}
+                <option value=None selected>None</option>
+            {% endif %}
+        </select>
+
+        <label for="tile_per_foot">Tile Cost per Square Foot: </label>
+        <input type="text" id="tile_per_foot" name="tile_per_foot"
+                {% if room.tile_cost_per_sqft != None %} value="{{ room.tile_cost_per_sqft }}" {% endif %}>
+
+        <label for="tile_area">Tiling Area: </label>
+        <input type="text" id="tile_area" name="tile_area"
+                {% if room.tiling_area != None %} value="{{ room.tiling_area }}" {% endif %}>
+
+        <button type="submit">Submit</button>
+    </form>
+
 {% endblock %}
