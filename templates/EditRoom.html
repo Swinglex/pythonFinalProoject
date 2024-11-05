@@ -5,7 +5,7 @@
 {% block content %}
 
     <h1>Edit Room</h1>
-    <form method="POST" action="/editRoom?room_id={{ room.id }}">
+    <form action="/editRoom?room_id={{ room.id }}" method="post">
         <!-- Form pre-filled with existing room data to allow updating information -->
         <label for="room_name">Room Name: </label>
         <input type="text" id="room_name" name="room_name" value="{{ room.name }}" required>
@@ -63,6 +63,15 @@
                 {% if room.tiling_area != None %} value="{{ room.tiling_area }}" {% endif %}>
 
         <button type="submit">Submit</button>
+        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                            <p class="error">{{ message }}</p>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
     </form>
 
 {% endblock %}

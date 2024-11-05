@@ -21,49 +21,50 @@ def index():
 @app.route('/room', methods=['GET', 'POST'])
 def room():
     if request.method == 'POST':
-        #basics of the room
+        vals = []
         room_name = request.form['room_name']
-        surface_area = float(request.form['surface_area'])
+        surface_area, val_surf_area = float_val(request.form['surface_area'])
+        if not val_surf_area:
+            flash("Surface Area Must Be a Number")
+            vals.append(val_surf_area)
         flooring_type = request.form['flooring_type']
-        flooring_cost_per_sqft = float(request.form['cost_per_foot'])
+        flooring_cost_per_sqft, val_cost_per = float_val(request.form['cost_per_foot'])
+        if not val_cost_per:
+            flash("Flooring Cost Per Foot Must Be a Number")
+            vals.append(val_cost_per)
 
-        # this checks the boolean of the form, it asks if it is true and returns it
         tiling = 'tiling' in request.form
 
         if tiling:
             tile_type = request.form['tile_type']
-            tile_cost_per_sqft = float(request.form['tile_per_foot'])
-            tiling_area = float(request.form['tile_area'])
+            tile_cost_per_sqft, val_tile_cost = float_val(request.form['tile_per_foot'])
+            if not val_tile_cost:
+                flash("Tile Cost Per Foot Must Be a Number")
+                vals.append(val_tile_cost)
+            tiling_area, val_tile_area = float_val(request.form['tile_area'])
+            if not val_tile_area:
+                flash("Tile Area Must Be a Number")
+                vals.append(val_tile_area)
         else:
             tile_type = None
-            tile_cost_per_sqft = None
-            tiling_area = None
+            tile_cost_per_sqft = 0
+            tiling_area = 0
 
-        #for tossing over to Supply and stuff
-        session['room_order'] = {
-            'room_name': room_name,
-            'surface_area': surface_area,
-            'flooring_type': flooring_type,
-            'flooring_cost_per_sqft': flooring_cost_per_sqft,
-            'tiling': tiling,
-            'tile_type': tile_type,
-            'tile_cost_per_sqft': tile_cost_per_sqft,
-            'tiling_area': tiling_area
-        }
-
+        if False in vals:
+            return redirect(url_for('room'))
 
         in_room = Room(name=room_name, surface_area=surface_area, flooring_type=flooring_type, flooring_cost_per_sqft=flooring_cost_per_sqft,
                        is_tiling_needed=tiling, tile_type=tile_type, tile_cost_per_sqft=tile_cost_per_sqft, tiling_area=tiling_area)
         sess.add(in_room)
         sess.commit()
         return redirect(url_for('index'))
-
-    return render_template('/add_room.html')
+    else:
+        return render_template('add_room.html')
 
 
 @app.route('/roomDetails')
 def room_details():
-    detail_room_id = request.args.get('room_id')
+    detail_room_id = request.args['room_id']
     detail_room = sess.query(Room).filter(Room.id == int(detail_room_id)).first()
     detail_supplies = sess.query(Supply).filter(Supply.room_id==int(detail_room_id)).all()
 
@@ -80,35 +81,45 @@ def room_edit():
             vals.append(val_surf_area)
         flooring_type = request.form['flooring_type']
         flooring_cost_per_sqft, val_cost_per = float_val(request.form['cost_per_foot'])
-        if not flooring_cost_per_sqft:
+        if not val_cost_per:
             flash("Flooring Cost Per Foot Must Be a Number")
             vals.append(val_cost_per)
 
         tiling = 'tiling' in request.form
+
         if tiling:
             tile_type = request.form['tile_type']
-            tile_cost_per_sqft = float(request.form['tile_per_foot'])
-            tiling_area = float(request.form['tile_area'])
+            tile_cost_per_sqft, val_tile_cost = float_val(request.form['tile_per_foot'])
+            if not val_tile_cost:
+                flash("Tile Cost Per Foot Must Be a Number")
+                vals.append(val_tile_cost)
+            tiling_area, val_tile_area = float_val(request.form['tile_area'])
+            if not val_tile_area:
+                flash("Tile Area Must Be a Number")
+                vals.append(val_tile_area)
         else:
             tile_type = None
-            tile_cost_per_sqft = None
-            tiling_area = None
+            tile_cost_per_sqft = 0
+            tiling_area = 0
 
-        room_id = int(request.args.get('room_id'))
+        if False in vals:
+            return redirect(url_for('room_edit'))
+
+        room_id = int(request.args['room_id'])
         sess.query(Room).filter(Room.id == room_id).update({Room.name: room_name, Room.surface_area: surface_area, Room.flooring_type: flooring_type,
                                                                  Room.flooring_cost_per_sqft: flooring_cost_per_sqft, Room.is_tiling_needed: tiling, Room.tile_type: tile_type,
                                                                  Room.tile_cost_per_sqft: tile_cost_per_sqft, Room.tiling_area: tiling_area})
         sess.commit()
         return redirect(url_for('index'))
 
-    room_id = int(request.args.get('room_id'))
+    room_id = int(request.args['room_id'])
     room_detail = sess.query(Room).filter(Room.id == room_id).first()
 
     return render_template("EditRoom.html", room=room_detail)
 
 @app.route('/supply', methods=['GET', 'POST'])
 def supply():
-    if request.method == "POST":
+    if request.method == 'POST':
         vals = []
         supply_name = request.form['supply_name']
         quantity = int(request.form['quantity'])
@@ -133,17 +144,47 @@ def supply():
         sess.add(in_supply)
         sess.commit()
         sess.query(Room).filter_by(id=int(room_id.id)).update(
-            {Room.total_remodel_cost: Room.total_flooring_cost + Room.total_tile_cost + sum_supplies(int(room_id))})
+            {Room.total_remodel_cost: Room.total_flooring_cost + Room.total_tile_cost + sum_supplies(int(room_id.id))})
         sess.commit()
         return redirect(url_for('index'))
+    else:
+        return render_template("AddSupply.html")
 
 
-    return render_template("AddSupply.html")
+@app.route('/editSupply', methods=['GET', 'POST'])
+def supply_edit():
+    if request.method == 'POST':
+        vals = []
+        supply_id = int(request.args['supply_id'])
+        supply_name = request.form['supply_name']
+        supply_quantity = int(request.form['quantity'])
+        supply_cost_per_item, val_cost = float_val(request.form['cost_per_item'])
+        if not val_cost:
+            flash("Cost Per Item Must Be a Number")
+            vals.append(val_cost)
 
+        room_name = request.form['room_name']
 
-@app.route('/supplyDetails')
-def supply_details():
-    return render_template("SupplyDetails.html")
+        room_id = name_to_room(room_name)
+
+        if room_id is None:
+            flash("Room Not Found")
+            vals.append(False)
+
+        if False in vals:
+            return redirect(f"/editSupply?supply_id={supply_id}")
+
+        sess.query(Supply).filter(Supply.id == supply_id).update(
+            {Supply.name: supply_name, Supply.quantity: supply_quantity, Supply.cost_per_item: supply_cost_per_item,
+             Supply.room_id: room_id.id})
+        sess.commit()
+
+        return redirect(url_for('index'))
+    else:
+        supply_id = int(request.args['supply_id'])
+        supplycool = sess.query(Supply).join(Room).filter(Supply.id == supply_id).first()
+        return render_template("EditSupply.html", supply=supplycool)
+
 
 def sum_supplies(room_id):
     total_supplies = sess.query(Supply).filter(Supply.room_id == room_id).all()

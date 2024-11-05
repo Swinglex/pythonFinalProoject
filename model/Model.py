@@ -50,6 +50,7 @@ class Supply(Base):
     quantity = Column(Integer)
     cost_per_item = Column(Float)
     total_supply_cost = Column(Float)
+
     room = relationship("Room")
 
     def __init__(self, room_id, name, quantity, cost_per_item):

@@ -1,5 +1,5 @@
 html {
-    height: 110vh;
+    min-height: 110vh;
     font-family: Arial, sans-serif;
     background: repeating-linear-gradient(
             45deg,
